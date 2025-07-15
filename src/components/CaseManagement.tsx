@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  Search, 
-  Filter, 
-  Star,
-  Building,
-  Save,
-  X,
-  Upload,
-  Image as ImageIcon,
-  Award,
-  Sliders,
-  CheckCircle,
-  AlertCircle,
-  ArrowRight,
-  Briefcase,
-  Users
+  Edit,
+  Trash2,
+  Eye,
+  Search,
+  Filter,
+  Star, 
+  Building, 
+  Save, 
+  X, 
+  Upload, 
+  Image as ImageIcon, 
+  Award, 
+  Sliders, 
+  CheckCircle, 
+  AlertCircle, 
+  ArrowRight, 
+  Briefcase, 
+  Users,
+  Info
 } from 'lucide-react';
 import { supabase, FeaturedCase, PartnerCase } from '../lib/supabase';
 import ImageUploader from './ImageUploader';
@@ -293,20 +294,20 @@ const CaseManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* 统计卡片 */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">精选案例</p>
               <p className="text-2xl font-bold text-gray-900">{featuredCases.length}</p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Star className="w-6 h-6 text-blue-600" />
+            <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Star className="w-7 h-7 text-blue-600" />
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">活跃精选案例</p>
@@ -314,25 +315,25 @@ const CaseManagement: React.FC = () => {
                 {featuredCases.filter(c => c.is_active).length}
               </p>
             </div>
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-orange-600" />
+            <div className="w-14 h-14 bg-orange-100 rounded-lg flex items-center justify-center">
+              <CheckCircle className="w-7 h-7 text-orange-600" />
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">合作客户案例</p>
               <p className="text-2xl font-bold text-purple-600">{partnerCases.length}</p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-purple-600" />
+            <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center">
+              <Briefcase className="w-7 h-7 text-purple-600" />
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">活跃合作案例</p>
@@ -340,23 +341,23 @@ const CaseManagement: React.FC = () => {
                 {partnerCases.filter(c => c.is_active).length}
               </p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <Users className="w-6 h-6 text-green-600" />
+            <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center">
+              <Users className="w-7 h-7 text-green-600" />
             </div>
           </div>
         </div>
       </div>
 
       {/* 标签页和操作栏 */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
           {/* 标签页 */}
-          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 shadow-inner">
             <button
               onClick={() => setActiveTab('featured')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'featured'
-                  ? 'bg-white text-[#194fe8] shadow-sm'
+                  ? 'bg-white text-[#194fe8] shadow-sm font-semibold'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -366,7 +367,7 @@ const CaseManagement: React.FC = () => {
               onClick={() => setActiveTab('partner')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'partner'
-                  ? 'bg-white text-[#194fe8] shadow-sm'
+                  ? 'bg-white text-[#194fe8] shadow-sm font-semibold'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -377,20 +378,20 @@ const CaseManagement: React.FC = () => {
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             {/* 搜索框 */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
               <input
                 type="text"
                 placeholder="搜索..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#194fe8] focus:border-transparent"
+                className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#194fe8] focus:border-transparent w-64"
               />
             </div>
 
             {/* 新建按钮 */}
             <button
               onClick={() => openNewEditor(activeTab)}
-              className="flex items-center space-x-2 bg-[#194fe8] hover:bg-[#1640c7] text-white px-4 py-2 rounded-lg transition-colors"
+              className="flex items-center space-x-2 bg-[#194fe8] hover:bg-[#1640c7] text-white px-5 py-2.5 rounded-lg transition-colors shadow-sm hover:shadow-md"
             >
               <Plus className="w-5 h-5" />
               <span>新建{activeTab === 'featured' ? '精选案例' : '合作客户案例'}</span>
@@ -400,7 +401,7 @@ const CaseManagement: React.FC = () => {
       </div>
 
       {/* 数据表格 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           {activeTab === 'featured' ? (
             <table className="w-full">
@@ -478,21 +479,21 @@ const CaseManagement: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleEdit(case_, 'featured')}
-                          className="text-[#194fe8] hover:text-[#1640c7] transition-colors"
+                          className="text-[#194fe8] hover:text-[#1640c7] transition-colors p-1.5 hover:bg-blue-50 rounded"
                           title="编辑"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => toggleActive(case_.id, case_.is_active, 'featured')}
-                          className="text-orange-600 hover:text-orange-700 transition-colors"
+                          className="text-orange-600 hover:text-orange-700 transition-colors p-1.5 hover:bg-orange-50 rounded"
                           title={case_.is_active ? '停用' : '激活'}
                         >
                           <CheckCircle className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(case_.id, 'featured')}
-                          className="text-red-600 hover:text-red-700 transition-colors"
+                          className="text-red-600 hover:text-red-700 transition-colors p-1.5 hover:bg-red-50 rounded"
                           title="删除"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -571,21 +572,21 @@ const CaseManagement: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleEdit(case_, 'partner')}
-                          className="text-[#194fe8] hover:text-[#1640c7] transition-colors"
+                          className="text-[#194fe8] hover:text-[#1640c7] transition-colors p-1.5 hover:bg-blue-50 rounded"
                           title="编辑"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => toggleActive(case_.id, case_.is_active, 'partner')}
-                          className="text-green-600 hover:text-green-700 transition-colors"
+                          className="text-green-600 hover:text-green-700 transition-colors p-1.5 hover:bg-green-50 rounded"
                           title={case_.is_active ? '停用' : '激活'}
                         >
                           <CheckCircle className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(case_.id, 'partner')}
-                          className="text-red-600 hover:text-red-700 transition-colors"
+                          className="text-red-600 hover:text-red-700 transition-colors p-1.5 hover:bg-red-50 rounded"
                           title="删除"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -604,12 +605,13 @@ const CaseManagement: React.FC = () => {
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               {activeTab === 'featured' ? (
-                <Star className="w-8 h-8 text-gray-400" />
+                <Star className="w-8 h-8 text-gray-500" />
               ) : (
-                <Briefcase className="w-8 h-8 text-gray-400" />
+                <Briefcase className="w-8 h-8 text-gray-500" />
               )}
             </div>
-            <p className="text-gray-500">暂无{activeTab === 'featured' ? '精选案例' : '合作客户案例'}数据</p>
+            <p className="text-gray-600 font-medium">暂无{activeTab === 'featured' ? '精选案例' : '合作客户案例'}数据</p>
+            <p className="text-gray-500 mt-2">点击"新建"按钮添加{activeTab === 'featured' ? '精选案例' : '合作客户案例'}</p>
           </div>
         )}
       </div>
@@ -618,13 +620,27 @@ const CaseManagement: React.FC = () => {
       {showEditor && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex min-h-screen items-center justify-center p-4">
-            <div className="fixed inset-0 bg-black bg-opacity-50" onClick={resetForm} />
+            <div className="fixed inset-0 bg-black bg-opacity-60" onClick={resetForm} />
             
-            <div className="relative bg-white rounded-2xl shadow-xl max-w-4xl w-full mx-4 max-h-[95vh] overflow-y-auto">
-              <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {editingItem ? '编辑' : '新建'}{activeTab === 'featured' ? '精选案例' : '合作客户案例'}
-                </h3>
+            <div className="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[95vh] overflow-y-auto">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-[#194fe8] rounded-lg flex items-center justify-center">
+                    {activeTab === 'featured' ? (
+                      <Star className="w-5 h-5 text-white" />
+                    ) : (
+                      <Briefcase className="w-5 h-5 text-white" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {editingItem ? '编辑' : '新建'}{activeTab === 'featured' ? '精选案例' : '合作客户案例'}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      {activeTab === 'featured' ? '在首页精选案例区域展示' : '在合作客户案例区域展示'}
+                    </p>
+                  </div>
+                </div>
                 <button
                   onClick={resetForm}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -640,7 +656,7 @@ const CaseManagement: React.FC = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          案例标题 *
+                          案例标题 <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -654,7 +670,7 @@ const CaseManagement: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          公司名称 *
+                          公司名称 <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -668,7 +684,7 @@ const CaseManagement: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          所属行业 *
+                          所属行业 <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -682,7 +698,7 @@ const CaseManagement: React.FC = () => {
 
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          案例描述 *
+                          案例描述 <span className="text-red-500">*</span>
                         </label>
                         <textarea
                           required
@@ -737,7 +753,7 @@ const CaseManagement: React.FC = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          公司名称 *
+                          公司名称 <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -751,7 +767,7 @@ const CaseManagement: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          所属行业 *
+                          所属行业 <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -765,7 +781,7 @@ const CaseManagement: React.FC = () => {
 
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          案例描述 *
+                          案例描述 <span className="text-red-500">*</span>
                         </label>
                         <textarea
                           required
@@ -779,7 +795,7 @@ const CaseManagement: React.FC = () => {
 
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          实施效果 *
+                          实施效果 <span className="text-red-500">*</span>
                         </label>
                         <textarea
                           required
@@ -843,13 +859,28 @@ const CaseManagement: React.FC = () => {
 
                 {/* 错误提示 */}
                 {submitError && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-sm text-red-600 flex items-center">
-                      <AlertCircle className="w-4 h-4 mr-2" />
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-600 flex items-start">
+                      <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
                       {submitError}
                     </p>
                   </div>
                 )}
+
+                {/* 提示信息 */}
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start">
+                    <Info className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm text-blue-700 font-medium">提示</p>
+                      <p className="text-sm text-blue-600 mt-1">
+                        {activeTab === 'featured' ? 
+                          '精选案例将在首页精选案例区域展示，建议上传高质量图片，并提供完整的案例描述。' : 
+                          '合作客户案例将在客户案例页面展示，建议上传公司Logo和案例图片，并详细描述实施效果。'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
                 {/* 操作按钮 */}
                 <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
@@ -857,23 +888,23 @@ const CaseManagement: React.FC = () => {
                     type="button"
                     onClick={resetForm}
                     disabled={isSubmitting}
-                    className="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium disabled:opacity-50"
+                    className="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium disabled:opacity-50 shadow-sm"
                   >
                     取消
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-8 py-3 bg-[#194fe8] hover:bg-[#1640c7] text-white rounded-lg transition-colors flex items-center space-x-2 font-medium disabled:opacity-50"
+                    className="px-8 py-3 bg-[#194fe8] hover:bg-[#1640c7] text-white rounded-lg transition-colors flex items-center space-x-2 font-medium disabled:opacity-50 shadow-sm hover:shadow-md"
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         <span>保存中...</span>
                       </>
                     ) : (
                       <>
-                        <Save className="w-4 h-4" />
+                        <Save className="w-5 h-5" />
                         <span>{editingItem ? '更新' : '创建'}</span>
                       </>
                     )}
