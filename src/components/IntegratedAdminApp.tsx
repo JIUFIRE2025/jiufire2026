@@ -11,7 +11,8 @@ import {
   Bell,
   Search,
   Award,
-  Sliders
+  Sliders,
+  Star
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import AdminLogin from './AdminLogin';
