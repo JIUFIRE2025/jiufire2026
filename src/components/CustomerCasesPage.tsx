@@ -16,7 +16,8 @@ import {
   Image as ImageIcon,
   ChevronLeft, 
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Briefcase
 } from 'lucide-react';
 import { supabase, CustomerCase, CaseConfiguration, FeaturedCase, PartnerCase, isSupabaseConfigured } from '../lib/supabase';
 import FormButton from './FormButton';
