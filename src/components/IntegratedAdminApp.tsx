@@ -11,7 +11,7 @@ import {
   Bell,
   Search,
   Award, 
-  Sliders, 
+  Sliders,
   Star,
   Building,
   Briefcase
@@ -20,7 +20,7 @@ import { supabase } from '../lib/supabase';
 import AdminLogin from './AdminLogin';
 import FormManagement from './FormManagement';
 import NewsManagement from './NewsManagement';
-import UnifiedCaseManagement from './UnifiedCaseManagement';
+import CombinedCaseManagement from './CombinedCaseManagement';
 import VariantFormManagement from './VariantFormManagement';
 import ButtonFormManager from './ButtonFormManager';
 
@@ -52,7 +52,7 @@ const IntegratedAdminApp: React.FC = () => {
     },
     {
       id: 'case-management',
-      name: '客户案例管理',
+      name: '案例综合管理',
       icon: Building,
       description: '客户案例与案例配置统一管理'
     },
@@ -130,9 +130,9 @@ const IntegratedAdminApp: React.FC = () => {
       case 'forms':
         return <FormManagement />;
       case 'news':
-        return <NewsManagement />;
+        return <NewsManagement />; // Keep NewsManagement separate as it's not a "case"
       case 'case-management':
-        return <UnifiedCaseManagement />;
+        return <CombinedCaseManagement />;
       case 'variant-forms':
         return <VariantFormManagement />;
       case 'users':
