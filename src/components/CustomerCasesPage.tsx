@@ -24,7 +24,7 @@ const CustomerCasesPage = memo(() => {
   const [cases, setCases] = useState<CustomerCase[]>([]);
   const [configurations, setConfigurations] = useState<CaseConfiguration[]>([]);
   const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
-  const [loading, setLoading] = useState(false); // 改为false，先显示默认数据
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // 默认案例数据 - 根据设计图更新
@@ -226,9 +226,7 @@ const CustomerCasesPage = memo(() => {
 
   const fetchData = useCallback(async () => {
     try {
-      // 先设置默认数据，立即显示内容
-      setCases(defaultCases);
-      setConfigurations(defaultConfigurations);
+      setLoading(true);
       setError(null);
 
       // Check if Supabase is configured before making requests
@@ -236,6 +234,7 @@ const CustomerCasesPage = memo(() => {
         console.warn('Supabase not configured, using default data');
         setCases(defaultCases);
         setConfigurations(defaultConfigurations);
+        setLoading(false);
         return;
       }
 
@@ -247,11 +246,11 @@ const CustomerCasesPage = memo(() => {
           .eq('status', 'active')
           .order('sort_order', { ascending: true });
 
-        if (casesError) {
+        if (casesError || !casesData || casesData.length === 0) {
           console.warn('获取客户案例失败:', casesError);
           setCases(defaultCases);
         } else {
-          setCases(casesData && casesData.length > 0 ? casesData : defaultCases);
+          setCases(casesData);
         }
 
         // 获取案例配置
@@ -261,11 +260,11 @@ const CustomerCasesPage = memo(() => {
           .eq('is_active', true)
           .order('sort_order', { ascending: true });
 
-        if (configsError) {
+        if (configsError || !configsData || configsData.length === 0) {
           console.warn('获取案例配置失败:', configsError);
           setConfigurations(defaultConfigurations);
         } else {
-          setConfigurations(configsData && configsData.length > 0 ? configsData : defaultConfigurations);
+          setConfigurations(configsData);
         }
       } catch (fetchError) {
         console.warn('Supabase fetch failed, using default data:', fetchError);
@@ -280,16 +279,11 @@ const CustomerCasesPage = memo(() => {
     } finally {
       setLoading(false);
     }
-  }, [defaultCases, defaultConfigurations]);
+  }, []);
 
   useEffect(() => {
-    // 然后在后台获取真实数据
-    const timer = setTimeout(() => {
-      fetchData();
-    }, 100); // 很短的延迟，让页面先渲染
-
-    return () => clearTimeout(timer);
-  }, [fetchData, defaultCases, defaultConfigurations]);
+    fetchData();
+  }, [fetchData]);
 
   const nextConfiguration = useCallback(() => {
     setCurrentConfigIndex((prev) => 
@@ -310,9 +304,12 @@ const CustomerCasesPage = memo(() => {
   // 使用 useMemo 缓存计算结果
   const { featuredCases, regularCases } = useMemo(() => {
     const featured = cases.filter(c => c.is_featured);
-    const regular = cases.filter(c => !c.is_featured);
+    // 确保至少有一些案例显示
+    const regular = cases.filter(c => !c.is_featured).length > 0 
+      ? cases.filter(c => !c.is_featured) 
+      : defaultCases.filter(c => !c.is_featured);
     return { featuredCases: featured, regularCases: regular };
-  }, [cases]);
+  }, [cases, defaultCases]);
 
   const currentConfig = useMemo(() => 
     configurations[currentConfigIndex], 
@@ -495,7 +492,7 @@ const CustomerCasesPage = memo(() => {
         <div className="mb-16">
           <div className="flex items-center space-x-2 mb-8">
             <Star className="w-5 h-5 text-orange-500" />
-            <h2 className="text-2xl font-bold text-gray-900">精选案例 ({featuredCases.length})</h2>
+            <h2 className="text-2xl font-bold text-gray-900">精选案例 ({featuredCases.length || 0})</h2>
           </div>
           
           {featuredCases.length > 0 ? (
@@ -548,7 +545,7 @@ const CustomerCasesPage = memo(() => {
 
         {/* 合作客户案例 - 4列网格布局 */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例 ({regularCases.length})</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例 ({regularCases.length || 0})</h2>
 
           {regularCases.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -595,7 +592,7 @@ const CustomerCasesPage = memo(() => {
             </div>
           ) : (
             <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <p className="text-gray-500">暂无合作客户案例</p>
+              <p className="text-gray-500">正在加载合作客户案例...</p>
             </div>
           )}
 

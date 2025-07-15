@@ -41,6 +41,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const [uploadPreview, setUploadPreview] = useState<string>('');
   const [isDragging, setIsDragging] = useState(false);
   const [uploadError, setUploadError] = useState<string>('');
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // 执行富文本命令
   const executeCommand = useCallback((command: string, value?: string) => {
@@ -199,7 +200,10 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   // 处理内容变化
   const handleContentChange = () => {
     if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
+      // 防止初始化时触发不必要的onChange
+      if (isInitialized) {
+        onChange(editorRef.current.innerHTML);
+      }
     }
   };
 
@@ -249,6 +253,17 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       }
     }
   };
+
+  // 初始化编辑器内容
+  React.useEffect(() => {
+    if (editorRef.current && !isInitialized) {
+      // 只在第一次渲染时设置内容
+      if (value) {
+        editorRef.current.innerHTML = value;
+      }
+      setIsInitialized(true);
+    }
+  }, [value, isInitialized]);
 
   return (
     <div className={`border border-gray-300 rounded-lg overflow-hidden ${className}`}>
@@ -329,9 +344,9 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         className="min-h-[400px] p-4 focus:outline-none"
         style={{ lineHeight: '1.6' }}
         onInput={handleContentChange}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleKeyDown} 
         onPaste={handlePaste}
-        dangerouslySetInnerHTML={{ __html: value }}
+        dangerouslySetInnerHTML={isInitialized ? undefined : { __html: value }}
         data-placeholder={placeholder}
       />
 

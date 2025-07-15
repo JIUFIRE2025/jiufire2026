@@ -142,11 +142,11 @@ const TradeKnowledge = memo(() => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
 
-  // UUID validation function
-  const isValidUUID = useCallback((id: string): boolean => {
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    return uuidRegex.test(id);
-  }, []);
+  // 检查ID是否有效
+  const isValidID = useCallback((id: string): boolean => {
+    // 支持UUID和其他格式的ID
+    return id && id.length > 0;
+  }, []); 
 
   // 优化的数据获取函数
   const fetchArticles = useCallback(async () => {
@@ -227,7 +227,7 @@ const TradeKnowledge = memo(() => {
   // 优化的文章点击处理
   const handleArticleClick = useCallback(async (article: NewsArticle) => {
     // 更新阅读量
-    if (isValidUUID(article.id)) {
+    if (isValidID(article.id)) {
       try {
         await supabase
           .from('news_articles')
@@ -242,7 +242,7 @@ const TradeKnowledge = memo(() => {
     setArticles(prev => 
       prev.map(a => 
         a.id === article.id ? { ...a, views: a.views + 1 } : a
-      )
+      ) 
     );
     
     setSelectedArticle(article);
@@ -251,7 +251,7 @@ const TradeKnowledge = memo(() => {
   // 优化的相关文章点击处理
   const handleRelatedArticleClick = useCallback(async (relatedArticle: NewsArticle) => {
     // 更新阅读量
-    if (isValidUUID(relatedArticle.id)) {
+    if (isValidID(relatedArticle.id)) {
       try {
         await supabase
           .from('news_articles')
@@ -266,7 +266,7 @@ const TradeKnowledge = memo(() => {
     setArticles(prev => 
       prev.map(a => 
         a.id === relatedArticle.id ? { ...a, views: a.views + 1 } : a
-      )
+      ) 
     );
     
     setSelectedArticle(relatedArticle);
@@ -274,7 +274,7 @@ const TradeKnowledge = memo(() => {
 
   // 优化的事件处理函数
   const toggleFilters = useCallback(() => {
-    setShowFilters(prev => !prev);
+    setShowFilters(prev => !prev); 
   }, []);
 
   const handleCategorySelect = useCallback((categoryValue: string) => {
@@ -282,7 +282,7 @@ const TradeKnowledge = memo(() => {
   }, []);
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setSearchTerm(e.target.value); 
   }, []);
 
   // 延迟加载数据
@@ -290,7 +290,7 @@ const TradeKnowledge = memo(() => {
     const timer = setTimeout(() => {
       fetchArticles();
     }, 100);
-
+    
     return () => clearTimeout(timer);
   }, [fetchArticles]);
 
@@ -298,7 +298,7 @@ const TradeKnowledge = memo(() => {
   if (selectedArticle) {
     return (
       <NewsDetail 
-        article={selectedArticle} 
+        article={selectedArticle}  
         onBack={() => setSelectedArticle(null)}
         onArticleClick={handleRelatedArticleClick}
       />
@@ -306,7 +306,7 @@ const TradeKnowledge = memo(() => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 w-full">
+    <div className="min-h-screen bg-gray-50 pt-16 w-full"> 
       {/* Banner区域 */}
       <section className="relative min-h-[500px] flex items-center overflow-hidden py-16 w-full">
         <div className="absolute inset-0">
@@ -314,7 +314,7 @@ const TradeKnowledge = memo(() => {
             src="/2dedee27edae73e00af82b262d86584e898c6085369e50-DvbSFE (1).jpg"
             alt="外贸智库背景"
             className="w-full h-full object-cover object-center"
-            loading="lazy"
+            loading="lazy" 
           />
         </div>
 
@@ -322,7 +322,7 @@ const TradeKnowledge = memo(() => {
           <div className="text-center">
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm mb-6">
               <div className="w-2 h-2 bg-[#194fe8] rounded-full"></div>
-              <span className="text-sm font-medium text-gray-700">外贸智库</span>
+              <span className="text-sm font-medium text-gray-700">外贸智库</span> 
             </div>
             
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
@@ -330,7 +330,7 @@ const TradeKnowledge = memo(() => {
             </h1>
             
             <p className="text-lg text-gray-600 leading-relaxed max-w-4xl mx-auto mb-8">
-              汇聚外贸政策解读、数字化转型指南、标杆案例分析，助力企业少走弯路
+              汇聚外贸政策解读、数字化转型指南、标杆案例分析，助力企业少走弯路 
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -338,7 +338,7 @@ const TradeKnowledge = memo(() => {
                 免费试用30天
               </FormButton>
               <FormButton variant="outline">
-                <Phone className="w-5 h-5" />
+                <Phone className="w-5 h-5" /> 
                 <span>400-026-2606</span>
               </FormButton>
             </div>
@@ -346,7 +346,7 @@ const TradeKnowledge = memo(() => {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8"> 
         <div className="grid lg:grid-cols-4 gap-8">
           {/* 左侧边栏 */}
           <div className="lg:col-span-1">
@@ -354,7 +354,7 @@ const TradeKnowledge = memo(() => {
               {/* 搜索框 */}
               <div className="mb-6">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" /> 
                   <input
                     type="text"
                     placeholder="搜索资讯..."
@@ -369,7 +369,7 @@ const TradeKnowledge = memo(() => {
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900">资讯分类</h3>
-                  <button
+                  <button 
                     onClick={toggleFilters}
                     className="lg:hidden text-gray-500"
                   >
@@ -377,7 +377,7 @@ const TradeKnowledge = memo(() => {
                   </button>
                 </div>
                 
-                <div className={`space-y-2 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+                <div className={`space-y-2 ${showFilters ? 'block' : 'hidden lg:block'}`}> 
                   {categoryStats.map((category) => (
                     <button
                       key={category.value}
@@ -385,7 +385,7 @@ const TradeKnowledge = memo(() => {
                       className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-left transition-colors ${
                         selectedCategory === category.value
                           ? 'bg-[#194fe8] text-white'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          : 'text-gray-700 hover:bg-gray-50' 
                       }`}
                     >
                       <span className="font-medium">{category.label}</span>
@@ -393,7 +393,7 @@ const TradeKnowledge = memo(() => {
                         selectedCategory === category.value
                           ? 'bg-white/20 text-white'
                           : 'bg-gray-100 text-gray-500'
-                      }`}>
+                      }`}> 
                         {category.count}
                       </span>
                     </button>
@@ -402,7 +402,7 @@ const TradeKnowledge = memo(() => {
               </div>
 
               {/* 热门标签 */}
-              <div>
+              <div> 
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">热门标签</h3>
                 <div className="flex flex-wrap gap-2">
                   {['数字化转型', 'AI智能', '供应链管理', '跨境电商', '政策解读', '市场分析'].map((tag, index) => (
@@ -410,7 +410,7 @@ const TradeKnowledge = memo(() => {
                       key={index}
                       className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 cursor-pointer transition-colors"
                     >
-                      {tag}
+                      {tag} 
                     </span>
                   ))}
                 </div>
@@ -418,7 +418,7 @@ const TradeKnowledge = memo(() => {
             </div>
           </div>
 
-          {/* 主要内容区域 */}
+          {/* 主要内容区域 */ }
           <div className="lg:col-span-3">
             {/* 加载状态 */}
             {loading && (
@@ -430,7 +430,7 @@ const TradeKnowledge = memo(() => {
 
             {/* 错误状态 */}
             {error && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6"> 
                 <p className="text-yellow-800 text-sm">{error}</p>
               </div>
             )}
@@ -438,7 +438,7 @@ const TradeKnowledge = memo(() => {
             {/* 精选文章 */}
             {!loading && featuredArticles.length > 0 && (
               <div className="mb-12">
-                <div className="flex items-center space-x-2 mb-6">
+                <div className="flex items-center space-x-2 mb-6"> 
                   <TrendingUp className="w-5 h-5 text-[#194fe8]" />
                   <h2 className="text-2xl font-bold text-gray-900">精选推荐</h2>
                 </div>
@@ -446,7 +446,7 @@ const TradeKnowledge = memo(() => {
                 <div className="grid md:grid-cols-2 gap-6">
                   {featuredArticles.slice(0, 4).map((article) => (
                     <article
-                      key={article.id}
+                      key={article.id} 
                       onClick={() => handleArticleClick(article)}
                       className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 cursor-pointer group"
                     >
@@ -455,7 +455,7 @@ const TradeKnowledge = memo(() => {
                           <img
                             src={article.image_url}
                             alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                             loading="lazy"
                           />
                         </div>
@@ -463,7 +463,7 @@ const TradeKnowledge = memo(() => {
                       
                       <div className="p-6">
                         <div className="flex items-center space-x-3 mb-3">
-                          <span className="px-3 py-1 bg-[#194fe8] text-white text-xs font-medium rounded-full">
+                          <span className="px-3 py-1 bg-[#194fe8] text-white text-xs font-medium rounded-full"> 
                             {article.category}
                           </span>
                           <div className="flex items-center text-gray-500 text-sm">
@@ -471,7 +471,7 @@ const TradeKnowledge = memo(() => {
                             {formatDate(article.publish_time)}
                           </div>
                         </div>
-                        
+                         
                         <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-[#194fe8] transition-colors line-clamp-2">
                           {article.title}
                         </h3>
@@ -481,7 +481,7 @@ const TradeKnowledge = memo(() => {
                             {article.summary}
                           </p>
                         )}
-                        
+                         
                         <div className="flex items-center justify-between">
                           <div className="flex items-center text-gray-500 text-sm">
                             <Eye className="w-4 h-4 mr-1" />
@@ -499,7 +499,7 @@ const TradeKnowledge = memo(() => {
             {/* 最新资讯 */}
             {!loading && (
               <div>
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-6"> 
                   <div className="flex items-center space-x-2">
                     <Clock className="w-5 h-5 text-[#194fe8]" />
                     <h2 className="text-2xl font-bold text-gray-900">最新资讯</h2>
@@ -514,7 +514,7 @@ const TradeKnowledge = memo(() => {
                 <div className="space-y-6">
                   {regularArticles.map((article) => (
                     <article
-                      key={article.id}
+                      key={article.id} 
                       onClick={() => handleArticleClick(article)}
                       className="bg-white rounded-lg p-6 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 cursor-pointer group"
                     >
@@ -522,7 +522,7 @@ const TradeKnowledge = memo(() => {
                         {article.image_url && (
                           <div className="flex-shrink-0 w-32 h-24 overflow-hidden rounded-lg">
                             <img
-                              src={article.image_url}
+                              src={article.image_url} 
                               alt={article.title}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                               loading="lazy"
@@ -530,7 +530,7 @@ const TradeKnowledge = memo(() => {
                           </div>
                         )}
                         
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0"> 
                           <div className="flex items-center space-x-3 mb-2">
                             <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
                               {article.category}
@@ -543,7 +543,7 @@ const TradeKnowledge = memo(() => {
                               <Eye className="w-4 h-4 mr-1" />
                               {article.views}
                             </div>
-                          </div>
+                          </div> 
                           
                           <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-[#194fe8] transition-colors line-clamp-2">
                             {article.title}
@@ -554,7 +554,7 @@ const TradeKnowledge = memo(() => {
                               {article.summary}
                             </p>
                           )}
-                          
+                           
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4 text-sm text-gray-500">
                               <span>阅读全文</span>
@@ -570,7 +570,7 @@ const TradeKnowledge = memo(() => {
                 {/* 加载更多 */}
                 {filteredArticles.length > 0 && (
                   <div className="text-center mt-12">
-                    <button className="bg-[#194fe8] hover:bg-[#1640c7] text-white font-medium py-3 px-8 rounded-lg transition-colors">
+                    <button className="bg-[#194fe8] hover:bg-[#1640c7] text-white font-medium py-3 px-8 rounded-lg transition-colors"> 
                       加载更多资讯
                     </button>
                   </div>
@@ -578,7 +578,7 @@ const TradeKnowledge = memo(() => {
 
                 {/* 无结果提示 */}
                 {filteredArticles.length === 0 && !loading && (
-                  <div className="text-center py-12">
+                  <div className="text-center py-12"> 
                     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Search className="w-8 h-8 text-gray-400" />
                     </div>

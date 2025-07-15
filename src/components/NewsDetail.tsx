@@ -15,7 +15,7 @@ import { NewsArticle, supabase } from '../lib/supabase';
 import { formatDate, formatTime } from '../utils/dateUtils';
 
 interface NewsDetailProps {
-  article: NewsArticle;
+  article: NewsArticle; 
   onBack: () => void;
   onArticleClick?: (article: NewsArticle) => void;
 }
@@ -24,10 +24,10 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
   const [isLoading, setIsLoading] = useState(true);
   const [relatedArticles, setRelatedArticles] = useState<NewsArticle[]>([]);
 
-  // UUID validation function
-  const isValidUUID = (id: string): boolean => {
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    return uuidRegex.test(id);
+  // ID validation function
+  const isValidID = (id: string): boolean => {
+    // 支持UUID和其他格式的ID
+    return id && id.length > 0;
   };
 
   // 提取文章关键词的函数
@@ -107,7 +107,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
       // 尝试从数据库获取文章
       const { data: dbArticles, error } = await supabase
         .from('news_articles')
-        .select('*')
+        .select('*') 
         .neq('id', article.id) // 排除当前文章
         .order('publish_time', { ascending: false })
         .limit(20); // 获取更多文章用于筛选
@@ -115,7 +115,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
       let allArticles: NewsArticle[] = [];
 
       if (error || !dbArticles || dbArticles.length === 0) {
-        // 如果数据库查询失败，使用模拟数据
+        // 如果数据库查询失败，使用模拟数据 
         allArticles = getMockRelatedArticles();
       } else {
         allArticles = dbArticles;
@@ -123,7 +123,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
 
       // 计算相关度并排序
       const articlesWithRelevance = allArticles.map(candidateArticle => ({
-        article: candidateArticle,
+        article: candidateArticle, 
         relevance: calculateRelevance(article, candidateArticle)
       }));
 
@@ -131,7 +131,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
       const sortedArticles = articlesWithRelevance
         .sort((a, b) => b.relevance - a.relevance)
         .slice(0, 2)
-        .map(item => item.article);
+        .map(item => item.article); 
 
       setRelatedArticles(sortedArticles);
     } catch (error) {
@@ -143,7 +143,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
 
   // 模拟相关文章数据（基于当前文章主题智能匹配）
   const getMockRelatedArticles = (): NewsArticle[] => {
-    const currentKeywords = extractKeywords(article);
+    const currentKeywords = extractKeywords(article); 
     
     // 根据当前文章关键词生成相关文章
     const mockArticlesPool: NewsArticle[] = [
@@ -151,7 +151,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
         id: 'related-erp-1',
         title: '外贸企业如何选择合适的ERP系统',
         category: article.category === '操作指南' ? '操作指南' : '市场分析',
-        publish_time: '2024-12-19 14:20:00',
+        publish_time: '2024-12-19 14:20:00', 
         image_url: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=400',
         summary: '为外贸企业提供ERP系统选择的详细指南和实用建议...',
         content: '详细的ERP选择指南内容...',
@@ -164,7 +164,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
         id: 'related-digital-1',
         title: '数字化转型成功案例分析',
         category: article.category === '新闻中心' ? '新闻中心' : '行业动态',
-        publish_time: '2024-12-18 09:15:00',
+        publish_time: '2024-12-18 09:15:00', 
         image_url: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=400',
         summary: '深度分析成功企业的数字化转型经验和关键要素...',
         content: '数字化转型案例分析内容...',
@@ -178,7 +178,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
     // 根据关键词匹配计算相关度
     const articlesWithRelevance = mockArticlesPool.map(candidateArticle => ({
       article: candidateArticle,
-      relevance: calculateRelevance(article, candidateArticle)
+      relevance: calculateRelevance(article, candidateArticle) 
     }));
 
     // 按相关度排序，取前2篇
@@ -191,7 +191,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
   useEffect(() => {
     setIsLoading(true);
     // 模拟加载过程
-    setTimeout(() => {
+    setTimeout(() => { 
       setIsLoading(false);
     }, 500);
     
@@ -199,7 +199,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
     fetchRelatedArticles();
   }, [article.id]);
 
-  const handleRelatedArticleClick = (relatedArticle: NewsArticle) => {
+  const handleRelatedArticleClick = (relatedArticle: NewsArticle) => { 
     if (onArticleClick) {
       onArticleClick(relatedArticle);
     }
@@ -207,7 +207,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white pt-16">
+      <div className="min-h-screen bg-white pt-16"> 
         <div className="max-w-4xl mx-auto px-6 lg:px-8 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
@@ -225,7 +225,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
   }
 
   return (
-    <div className="min-h-screen bg-white pt-16">
+    <div className="min-h-screen bg-white pt-16"> 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 py-8">
         {/* 返回按钮 */}
         <button
@@ -233,7 +233,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
           className="flex items-center space-x-2 text-[#194fe8] hover:text-[#1640c7] mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>返回资讯列表</span>
+          <span>返回资讯列表</span> 
         </button>
 
         {/* 文章内容 */}
@@ -241,7 +241,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
           {/* 分类标签 */}
           <div className="mb-4">
             <span className="inline-block px-3 py-1 bg-[#194fe8] text-white text-sm font-medium rounded">
-              {article.category}
+              {article.category} 
             </span>
           </div>
 
@@ -253,7 +253,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
           {/* 文章元信息 */}
           <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm mb-8 pb-6 border-b border-gray-200">
             <div className="flex items-center space-x-1">
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-4 h-4" /> 
               <span>{formatDate(article.publish_time)} {formatTime(article.publish_time, true)}</span>
             </div>
             <div className="flex items-center space-x-1">
@@ -261,7 +261,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
               <span>{article.views} 阅读</span>
             </div>
             <div className="flex items-center space-x-1">
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4" /> 
               <span>久火ERP编辑部</span>
             </div>
           </div>
@@ -269,7 +269,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
           {/* 文章摘要 */}
           {article.summary && (
             <div className="mb-8 p-4 bg-blue-50 border-l-4 border-[#194fe8] rounded-r">
-              <div className="flex items-start space-x-3">
+              <div className="flex items-start space-x-3"> 
                 <BookOpen className="w-5 h-5 text-[#194fe8] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">文章摘要</h3>
@@ -283,7 +283,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
 
           {/* 文章封面图 */}
           {article.image_url && (
-            <div className="mb-8">
+            <div className="mb-8"> 
               <img
                 src={article.image_url}
                 alt={article.title}
@@ -294,7 +294,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
 
           {/* 文章正文 */}
           <div className="prose prose-lg max-w-none mb-12">
-            {article.content ? (
+            {article.content ? ( 
               <div 
                 className="text-gray-800 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: article.content }}
@@ -302,7 +302,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
             ) : (
               <div className="text-gray-800 leading-relaxed space-y-6">
                 <p>
-                  随着全球贸易数字化进程的加速，外贸企业面临着前所未有的机遇和挑战。
+                  随着全球贸易数字化进程的加速，外贸企业面临着前所未有的机遇和挑战。 
                   久火ERP作为专业的外贸管理系统，致力于为企业提供全链路的数字化解决方案。
                 </p>
                 
@@ -311,7 +311,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   企业需要更加智能化、自动化的管理工具来提升运营效率，降低成本，增强竞争力。
                 </p>
 
-                <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4"> 
                   数字化转型的核心价值
                 </h3>
                 
@@ -320,7 +320,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   通过实施ERP系统，企业可以实现：
                 </p>
 
-                <ul className="list-disc list-inside space-y-2 ml-4">
+                <ul className="list-disc list-inside space-y-2 ml-4"> 
                   <li>业务流程的标准化和自动化</li>
                   <li>数据的实时采集和智能分析</li>
                   <li>跨部门协作效率的显著提升</li>
@@ -328,7 +328,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   <li>决策支持的科学化和精准化</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4"> 
                   久火ERP的独特优势
                 </h3>
 
@@ -336,7 +336,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   久火ERP基于多年的行业经验和技术积累，为外贸企业量身定制了一套完整的管理解决方案：
                 </p>
 
-                <div className="bg-gray-50 rounded-lg p-6 my-6">
+                <div className="bg-gray-50 rounded-lg p-6 my-6"> 
                   <h4 className="font-semibold text-gray-900 mb-3">核心功能模块</h4>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
@@ -359,7 +359,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   大幅提升运营效率和客户满意度。
                 </p>
 
-                <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4"> 
                   未来发展趋势
                 </h3>
 
@@ -367,7 +367,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   展望未来，外贸行业的数字化发展将呈现以下趋势：
                 </p>
 
-                <p>
+                <p> 
                   <strong>人工智能深度应用：</strong>AI技术将在市场预测、客户分析、风险控制等方面发挥更大作用。
                 </p>
 
@@ -379,7 +379,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                   <strong>生态系统整合：</strong>ERP系统将与更多第三方平台和服务深度整合，形成完整的商业生态。
                 </p>
 
-                <div className="bg-blue-50 border-l-4 border-[#194fe8] p-6 my-8">
+                <div className="bg-blue-50 border-l-4 border-[#194fe8] p-6 my-8"> 
                   <p className="text-gray-800">
                     <strong>结语：</strong>
                     数字化转型是外贸企业发展的必然趋势。选择合适的ERP系统，
@@ -393,7 +393,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
 
           {/* 分享和更新信息 */}
           <div className="flex items-center justify-between py-6 border-t border-gray-200 mb-12">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4"> 
               <span className="text-sm text-gray-600">分享</span>
               <button className="flex items-center space-x-2 text-gray-600 hover:text-[#194fe8] transition-colors">
                 <Share2 className="w-4 h-4" />
@@ -401,7 +401,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
             </div>
             
             <div className="text-sm text-gray-500">
-              最后更新：{formatDate(article.updated_at, true)}
+              最后更新：{formatDate(article.updated_at, true)} 
             </div>
           </div>
         </article>
@@ -409,7 +409,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
         {/* 紧凑型相关推荐 - 小图标展示 */}
         <div className="mt-12">
           <div className="flex items-center space-x-2 mb-6">
-            <Tag className="w-5 h-5 text-[#194fe8]" />
+            <Tag className="w-5 h-5 text-[#194fe8]" /> 
             <h3 className="text-xl font-bold text-gray-900">相关推荐</h3>
           </div>
           
@@ -417,7 +417,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
             <div className="grid md:grid-cols-2 gap-6">
               {relatedArticles.map((relatedArticle, index) => (
                 <div
-                  key={relatedArticle.id}
+                  key={relatedArticle.id} 
                   onClick={() => handleRelatedArticleClick(relatedArticle)}
                   className="bg-white rounded-lg border border-gray-200 hover:border-[#194fe8] hover:shadow-md transition-all duration-300 cursor-pointer group p-4"
                 >
@@ -425,7 +425,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                     {/* 小图标 */}
                     <div className="flex-shrink-0">
                       <div className="w-8 h-8 bg-[#194fe8] rounded flex items-center justify-center">
-                        <Tag className="w-4 h-4 text-white" />
+                        <Tag className="w-4 h-4 text-white" /> 
                       </div>
                     </div>
                     
@@ -433,7 +433,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-[#194fe8] font-medium">相关文章</span>
-                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#194fe8] group-hover:translate-x-1 transition-all" />
+                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#194fe8] group-hover:translate-x-1 transition-all" /> 
                       </div>
                       
                       <h4 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-[#194fe8] transition-colors line-clamp-2 leading-tight">
@@ -441,7 +441,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                       </h4>
                       
                       <p className="text-gray-600 text-sm line-clamp-2 mb-3 leading-relaxed">
-                        {relatedArticle.summary}
+                        {relatedArticle.summary} 
                       </p>
                       
                       <div className="flex items-center justify-between text-xs text-gray-500">
@@ -449,7 +449,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                         <span className="flex items-center space-x-1">
                           <Eye className="w-3 h-3" />
                           <span>{relatedArticle.views} 阅读</span>
-                        </span>
+                        </span> 
                       </div>
                     </div>
                   </div>
@@ -459,7 +459,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
           ) : (
             <div className="text-center py-8 text-gray-500">
               <BookOpen className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-              <p>暂无相关推荐文章</p>
+              <p>暂无相关推荐文章</p> 
             </div>
           )}
         </div>
