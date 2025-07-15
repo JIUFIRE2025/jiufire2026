@@ -17,12 +17,14 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import { supabase, CustomerCase, CaseConfiguration, isSupabaseConfigured } from '../lib/supabase';
+import { supabase, CustomerCase, CaseConfiguration, FeaturedCase, PartnerCase, isSupabaseConfigured } from '../lib/supabase';
 import FormButton from './FormButton';
 
 const CustomerCasesPage = memo(() => {
   const [cases, setCases] = useState<CustomerCase[]>([]);
   const [configurations, setConfigurations] = useState<CaseConfiguration[]>([]);
+  const [featuredCases, setFeaturedCases] = useState<FeaturedCase[]>([]);
+  const [partnerCases, setPartnerCases] = useState<PartnerCase[]>([]);
   const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -239,6 +241,33 @@ const CustomerCasesPage = memo(() => {
       }
 
       try {
+        
+        // 获取精选案例
+        const { data: featuredData, error: featuredError } = await supabase
+          .from('featured_cases')
+          .select('*')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true });
+
+        if (!featuredError && featuredData && featuredData.length > 0) {
+          setFeaturedCases(featuredData);
+        } else {
+          console.warn('获取精选案例失败或无数据:', featuredError);
+        }
+
+        // 获取合作客户案例
+        const { data: partnerData, error: partnerError } = await supabase
+          .from('partner_cases')
+          .select('*')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true });
+
+        if (!partnerError && partnerData && partnerData.length > 0) {
+          setPartnerCases(partnerData);
+        } else {
+          console.warn('获取合作客户案例失败或无数据:', partnerError);
+        }
+
         // 获取客户案例
         const { data: casesData, error: casesError } = await supabase
           .from('customer_cases')
@@ -274,8 +303,44 @@ const CustomerCasesPage = memo(() => {
     } catch (error) {
       console.error('获取数据失败:', error);
       // Don't set error state, just use default data
-      setCases(defaultCases);
-      setConfigurations(defaultConfigurations);
+      if (featuredCases.length === 0) {
+        setFeaturedCases(defaultCases.filter(c => c.is_featured).map(c => ({
+          id: c.id,
+          title: c.description,
+          company_name: c.company_name,
+          industry: c.industry,
+          description: c.results,
+          image_url: c.metrics?.image_url,
+          is_active: true,
+          sort_order: c.sort_order,
+          created_at: c.created_at,
+          updated_at: c.updated_at
+        })));
+      }
+      
+      if (partnerCases.length === 0) {
+        setPartnerCases(defaultCases.filter(c => !c.is_featured).map(c => ({
+          id: c.id,
+          company_name: c.company_name,
+          logo_url: '',
+          industry: c.industry,
+          description: c.description,
+          results: c.results,
+          image_url: c.metrics?.image_url,
+          is_active: true,
+          sort_order: c.sort_order,
+          created_at: c.created_at,
+          updated_at: c.updated_at
+        })));
+      }
+      
+      if (cases.length === 0) {
+        setCases(defaultCases);
+      }
+      
+      if (configurations.length === 0) {
+        setConfigurations(defaultConfigurations);
+      }
     } finally {
       setLoading(false);
     }
@@ -302,14 +367,24 @@ const CustomerCasesPage = memo(() => {
   }, []);
 
   // 使用 useMemo 缓存计算结果
-  const { featuredCases, regularCases } = useMemo(() => {
-    const featured = cases.filter(c => c.is_featured);
-    // 确保至少有一些案例显示
-    const regular = cases.filter(c => !c.is_featured).length > 0 
-      ? cases.filter(c => !c.is_featured) 
-      : defaultCases.filter(c => !c.is_featured);
-    return { featuredCases: featured, regularCases: regular };
-  }, [cases, defaultCases]);
+  const displayFeaturedCases = useMemo(() => {
+    // 优先使用新的精选案例表数据
+    if (featuredCases && featuredCases.length > 0) {
+      return featuredCases;
+    }
+    // 回退到旧的案例数据
+    return cases.filter(c => c.is_featured);
+  }, [featuredCases, cases]);
+
+  const displayPartnerCases = useMemo(() => {
+    // 优先使用新的合作客户案例表数据
+    if (partnerCases && partnerCases.length > 0) {
+      return partnerCases;
+    }
+    // 回退到旧的案例数据
+    const regular = cases.filter(c => !c.is_featured);
+    return regular.length > 0 ? regular : defaultCases.filter(c => !c.is_featured);
+  }, [partnerCases, cases, defaultCases]);
 
   const currentConfig = useMemo(() => 
     configurations[currentConfigIndex], 
@@ -492,26 +567,34 @@ const CustomerCasesPage = memo(() => {
         <div className="mb-16">
           <div className="flex items-center space-x-2 mb-8">
             <Star className="w-5 h-5 text-orange-500" />
-            <h2 className="text-2xl font-bold text-gray-900">精选案例 ({featuredCases.length || 0})</h2>
+            <h2 className="text-2xl font-bold text-gray-900">精选案例 ({displayFeaturedCases.length || 0})</h2>
           </div>
           
-          {featuredCases.length > 0 ? (
+          {displayFeaturedCases.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredCases.map((case_) => (
+            {displayFeaturedCases.map((case_) => (
               <div
                 key={case_.id}
                 className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer"
               >
                 {/* 只显示图片区域 */}
                 <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={case_.metrics?.image_url || 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800'}
-                    alt={case_.company_name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  {case_.image_url ? (
+                    <img
+                      src={case_.image_url}
+                      alt={'title' in case_ ? case_.title : case_.company_name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <img
+                      src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+                      alt={case_.company_name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
                   
                   {/* 股票代码标签 */}
-                  {case_.metrics?.stock_code && (
+                  {'metrics' in case_ && case_.metrics?.stock_code && (
                     <div className="absolute bottom-3 left-3 bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">
                       股票代码：{case_.metrics.stock_code}
                     </div>
@@ -525,7 +608,7 @@ const CustomerCasesPage = memo(() => {
                   </div>
                   
                   <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#194fe8] transition-colors text-sm leading-tight">
-                    {case_.description}
+                    {'title' in case_ ? case_.title : case_.description}
                   </h3>
                   
                   <div className="flex items-center justify-between">
@@ -545,20 +628,20 @@ const CustomerCasesPage = memo(() => {
 
         {/* 合作客户案例 - 4列网格布局 */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例 ({regularCases.length || 0})</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例 ({displayPartnerCases.length || 0})</h2>
 
-          {regularCases.length > 0 ? (
+          {displayPartnerCases.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {regularCases.map((case_) => (
+            {displayPartnerCases.map((case_) => (
               <div
                 key={case_.id}
                 className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden group cursor-pointer"
               >
                 {/* 案例图片区域 - 移除logo占位符 */}
                 <div className="relative h-32 overflow-hidden">
-                  {case_.metrics?.image_url ? (
+                  {('image_url' in case_ && case_.image_url) ? (
                     <img
-                      src={case_.metrics.image_url}
+                      src={case_.image_url}
                       alt={case_.company_name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -579,7 +662,7 @@ const CustomerCasesPage = memo(() => {
                   </h3>
                   <p className="text-[#194fe8] font-medium text-xs mb-2">{case_.industry}</p>
                   <p className="text-gray-600 text-xs leading-relaxed mb-3 line-clamp-2">
-                    {case_.description}
+                    {'results' in case_ ? case_.results : case_.description}
                   </p>
                   
                   <div className="flex items-center justify-between">
