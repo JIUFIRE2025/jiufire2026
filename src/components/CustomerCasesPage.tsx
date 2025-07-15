@@ -18,7 +18,7 @@ import {
   ChevronLeft, 
   ChevronRight,
   ExternalLink,
-  Briefcase
+  Briefcase as BriefcaseIcon
 } from 'lucide-react';
 import { supabase, CustomerCase, CaseConfiguration, FeaturedCase, PartnerCase, isSupabaseConfigured } from '../lib/supabase';
 import FormButton from './FormButton';
