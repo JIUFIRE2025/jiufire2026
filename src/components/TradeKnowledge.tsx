@@ -246,7 +246,7 @@ const TradeKnowledge = memo(() => {
     );
     
     setSelectedArticle(article);
-  }, [isValidUUID]);
+  }, [isValidID]);
 
   // 优化的相关文章点击处理
   const handleRelatedArticleClick = useCallback(async (relatedArticle: NewsArticle) => {
@@ -270,7 +270,7 @@ const TradeKnowledge = memo(() => {
     );
     
     setSelectedArticle(relatedArticle);
-  }, [isValidUUID]);
+  }, [isValidID]);
 
   // 优化的事件处理函数
   const toggleFilters = useCallback(() => {
