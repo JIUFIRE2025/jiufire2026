@@ -128,7 +128,6 @@ const NewsManagement: React.FC = () => {
             ...formData,
             publish_time: new Date().toISOString()
           }]);
-          .insert([formData]);
 
         if (error) throw error;
       }
