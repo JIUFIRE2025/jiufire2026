@@ -156,8 +156,13 @@ const AiEditorComponent: React.FC<AiEditorProps> = ({
     // 清理函数
     return () => {
       if (aiEditorRef.current) {
-        aiEditorRef.current.destroy();
-        aiEditorRef.current = null;
+        // 延迟销毁编辑器，避免与 React 的 DOM 卸载产生竞态条件
+        setTimeout(() => {
+          if (aiEditorRef.current) {
+            aiEditorRef.current.destroy();
+            aiEditorRef.current = null;
+          }
+        }, 0);
       }
     };
   }, []);
