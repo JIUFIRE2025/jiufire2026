@@ -3,22 +3,23 @@ import {
   LayoutDashboard, 
   FileText, 
   Newspaper, 
-  Users, 
+  Users,
   Settings, 
   LogOut,
   Menu,
   X,
   Bell,
   Search,
-  Award,
-  Sliders,
-  Star
+  Award, 
+  Sliders, 
+  Star,
+  Building,
+  Briefcase
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import AdminLogin from './AdminLogin';
 import FormManagement from './FormManagement';
 import NewsManagement from './NewsManagement';
-import UnifiedCaseManagement from './UnifiedCaseManagement';
 import CaseManagement from './CaseManagement';
 import VariantFormManagement from './VariantFormManagement';
 import ButtonFormManager from './ButtonFormManager';
@@ -29,6 +30,7 @@ const IntegratedAdminApp: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // 统一案例管理菜单项
   const menuItems = [
     {
       id: 'dashboard',
@@ -49,15 +51,9 @@ const IntegratedAdminApp: React.FC = () => {
       description: '新闻资讯内容管理'
     },
     {
-      id: 'cases',
-      name: '案例管理',
-      icon: Award,
-      description: '客户案例与配置管理'
-    },
-    {
       id: 'case-management',
-      name: '精选与合作案例',
-      icon: Star,
+      name: '客户案例管理',
+      icon: Award,
       description: '精选案例与合作客户案例管理'
     },
     {
@@ -135,8 +131,6 @@ const IntegratedAdminApp: React.FC = () => {
         return <FormManagement />;
       case 'news':
         return <NewsManagement />;
-      case 'cases':
-        return <UnifiedCaseManagement />;
       case 'case-management':
         return <CaseManagement />;
       case 'variant-forms':

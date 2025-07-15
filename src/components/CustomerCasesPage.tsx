@@ -3,7 +3,7 @@ import { memo, useMemo, useCallback } from 'react';
 import { 
   Building, 
   TrendingUp, 
-  Award,
+  Award, 
   ArrowRight,
   CheckCircle,
   BarChart3,
@@ -14,8 +14,9 @@ import {
   Users,
   Zap,
   Image as ImageIcon,
-  ChevronLeft,
-  ChevronRight
+  ChevronLeft, 
+  ChevronRight,
+  ExternalLink
 } from 'lucide-react';
 import { supabase, CustomerCase, CaseConfiguration, FeaturedCase, PartnerCase, isSupabaseConfigured } from '../lib/supabase';
 import FormButton from './FormButton';
@@ -478,18 +479,18 @@ const CustomerCasesPage = memo(() => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         {/* 案例配置展示区域 */}
         {currentConfig && (
-          <div className="mb-16">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-gray-200 relative overflow-hidden">
+          <div className="mb-20">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 border border-gray-200 relative overflow-hidden shadow-md">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 {/* 左侧图片区域 */}
                 <div className="relative">
                   <img
                     src={currentConfig.image_url || 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800'}
                     alt={currentConfig.title}
-                    className="w-full h-64 object-cover rounded-lg shadow-sm"
+                    className="w-full h-64 object-cover rounded-lg shadow-md"
                   />
                   {currentConfig.stock_code && (
-                    <div className="absolute bottom-4 left-4 bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">
+                    <div className="absolute bottom-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium shadow-sm">
                       股票代码：{currentConfig.stock_code}
                     </div>
                   )}
@@ -498,20 +499,20 @@ const CustomerCasesPage = memo(() => {
                 {/* 右侧内容区域 */}
                 <div>
                   <div className="flex items-center space-x-2 mb-4">
-                    <div className="w-8 h-8 bg-[#194fe8] text-white rounded flex items-center justify-center font-bold text-sm">
+                    <div className="w-10 h-10 bg-[#194fe8] text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-sm">
                       {currentConfig.company_logo}
                     </div>
                     {currentConfig.subtitle && (
-                      <span className="text-sm font-medium text-gray-600">{currentConfig.subtitle}</span>
+                      <span className="text-sm font-medium text-gray-700">{currentConfig.subtitle}</span>
                     )}
                   </div>
                   
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
                     {currentConfig.title}
                   </h3>
                   
                   {currentConfig.description && (
-                    <p className="text-gray-600 mb-6 leading-relaxed">
+                    <p className="text-gray-700 mb-6 leading-relaxed">
                       {currentConfig.description}
                     </p>
                   )}
@@ -519,10 +520,10 @@ const CustomerCasesPage = memo(() => {
                   {currentConfig.link_url && (
                     <button 
                       onClick={() => window.open(currentConfig.link_url, '_blank')}
-                      className="text-[#194fe8] hover:text-[#1640c7] font-medium flex items-center space-x-1 transition-colors"
+                      className="text-[#194fe8] hover:text-[#1640c7] font-medium flex items-center space-x-2 transition-colors group"
                     >
                       <span>查看详情</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
                   )}
                 </div>
@@ -534,13 +535,13 @@ const CustomerCasesPage = memo(() => {
                   {/* 左右箭头 */}
                   <button
                     onClick={prevConfiguration}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110"
                   >
                     <ChevronLeft className="w-5 h-5 text-gray-600" />
                   </button>
                   <button
                     onClick={nextConfiguration}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110"
                   >
                     <ChevronRight className="w-5 h-5 text-gray-600" />
                   </button>
@@ -548,13 +549,13 @@ const CustomerCasesPage = memo(() => {
                   {/* 底部指示器 */}
                   <div className="flex justify-center mt-8 space-x-2">
                     {configurations.map((_, index) => (
-                      <button
+                      <div
                         key={index}
                         onClick={() => goToConfiguration(index)}
                         className={`w-8 h-1 rounded-full transition-colors ${
                           index === currentConfigIndex ? 'bg-[#194fe8]' : 'bg-gray-300'
-                        }`}
-                      />
+                        } cursor-pointer hover:bg-[#194fe8]/70`}
+                      ></div>
                     ))}
                   </div>
                 </>
@@ -564,18 +565,20 @@ const CustomerCasesPage = memo(() => {
         )}
 
         {/* 精选案例 - 只显示图片 */}
-        <div className="mb-16">
-          <div className="flex items-center space-x-2 mb-8">
-            <Star className="w-5 h-5 text-orange-500" />
-            <h2 className="text-2xl font-bold text-gray-900">精选案例 ({displayFeaturedCases.length || 0})</h2>
+        <div className="mb-20">
+          <div className="flex items-center space-x-3 mb-10">
+            <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+              <Star className="w-5 h-5 text-orange-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900">精选案例 <span className="text-gray-500 font-normal">({displayFeaturedCases.length || 0})</span></h2>
           </div>
           
           {displayFeaturedCases.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayFeaturedCases.map((case_) => (
               <div
-                key={case_.id}
-                className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer"
+                key={case_.id} 
+                className="bg-white rounded-xl border border-gray-200 hover:border-[#194fe8] hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer"
               >
                 {/* 只显示图片区域 */}
                 <div className="relative h-48 overflow-hidden">
@@ -583,37 +586,37 @@ const CustomerCasesPage = memo(() => {
                     <img
                       src={case_.image_url}
                       alt={'title' in case_ ? case_.title : case_.company_name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
                     <img
                       src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
                       alt={case_.company_name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   )}
                   
                   {/* 股票代码标签 */}
                   {'metrics' in case_ && case_.metrics?.stock_code && (
-                    <div className="absolute bottom-3 left-3 bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">
+                    <div className="absolute bottom-3 left-3 bg-[#194fe8] text-white px-3 py-1 rounded-md text-sm font-medium shadow-md">
                       股票代码：{case_.metrics.stock_code}
                     </div>
                   )}
                 </div>
 
                 {/* 公司信息 */}
-                <div className="p-4">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <div className="text-sm text-[#194fe8] font-medium">{case_.industry}</div>
+                <div className="p-5">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className="px-3 py-1 bg-blue-50 text-[#194fe8] text-xs font-medium rounded-full">{case_.industry}</span>
                   </div>
                   
-                  <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#194fe8] transition-colors text-sm leading-tight">
+                  <h3 className="font-bold text-gray-900 mb-3 group-hover:text-[#194fe8] transition-colors text-lg leading-tight line-clamp-2">
                     {'title' in case_ ? case_.title : case_.description}
                   </h3>
                   
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-2">
                     <span className="text-sm text-[#194fe8] font-medium">查看详情</span>
-                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#194fe8] group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#194fe8] group-hover:translate-x-2 transition-all duration-300" />
                   </div>
                 </div>
               </div>
@@ -627,47 +630,55 @@ const CustomerCasesPage = memo(() => {
         </div>
 
         {/* 合作客户案例 - 4列网格布局 */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例 ({displayPartnerCases.length || 0})</h2>
+        <div className="mb-20">
+          <div className="flex items-center space-x-3 mb-10">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Briefcase className="w-5 h-5 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900">合作客户案例 <span className="text-gray-500 font-normal">({displayPartnerCases.length || 0})</span></h2>
+          </div>
 
           {displayPartnerCases.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {displayPartnerCases.map((case_) => (
               <div
                 key={case_.id}
-                className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden group cursor-pointer"
+                className="bg-white rounded-xl border border-gray-200 hover:border-[#194fe8] hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer"
               >
                 {/* 案例图片区域 - 移除logo占位符 */}
-                <div className="relative h-32 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   {('image_url' in case_ && case_.image_url) ? (
                     <img
                       src={case_.image_url}
                       alt={case_.company_name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
-                      <ImageIcon className="w-8 h-8 text-gray-400" />
+                    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-blue-100 flex items-center justify-center p-4">
+                      <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-md">
+                        <Building className="w-10 h-10 text-[#194fe8]" />
+                      </div>
                     </div>
                   )}
-                  <div className="absolute top-2 right-2 text-xs text-gray-500 bg-white px-2 py-1 rounded">
-                    {case_.id.slice(-6).toUpperCase()}
-                  </div>
                 </div>
 
                 {/* 案例信息 */}
-                <div className="p-4">
-                  <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#194fe8] transition-colors text-sm">
+                <div className="p-5">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className="px-3 py-1 bg-blue-50 text-[#194fe8] text-xs font-medium rounded-full">{case_.industry}</span>
+                  </div>
+                  
+                  <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#194fe8] transition-colors text-lg">
                     {case_.company_name}
                   </h3>
-                  <p className="text-[#194fe8] font-medium text-xs mb-2">{case_.industry}</p>
-                  <p className="text-gray-600 text-xs leading-relaxed mb-3 line-clamp-2">
+                  
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                     {'results' in case_ ? case_.results : case_.description}
                   </p>
                   
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">查看详情</span>
-                    <ArrowRight className="w-3 h-3 text-gray-400 group-hover:text-[#194fe8] group-hover:translate-x-1 transition-all" />
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="text-sm text-[#194fe8] font-medium">查看详情</span>
+                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#194fe8] group-hover:translate-x-2 transition-all duration-300" />
                   </div>
                 </div>
               </div>
@@ -680,24 +691,24 @@ const CustomerCasesPage = memo(() => {
           )}
 
           {/* 分页 */}
-          <div className="flex justify-center items-center space-x-2 mt-8">
-            <button className="w-8 h-8 bg-[#194fe8] text-white rounded-full flex items-center justify-center text-sm font-medium">
+          <div className="flex justify-center items-center space-x-2 mt-12">
+            <button className="w-9 h-9 bg-[#194fe8] text-white rounded-full flex items-center justify-center text-sm font-medium shadow-sm hover:bg-[#1640c7] transition-colors">
               1
             </button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm">
+            <button className="w-9 h-9 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm transition-colors">
               2
             </button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm">
+            <button className="w-9 h-9 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm transition-colors">
               3
             </button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm">
+            <button className="w-9 h-9 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm transition-colors">
               4
             </button>
             <span className="text-gray-400">...</span>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm">
+            <button className="w-9 h-9 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm transition-colors">
               7
             </button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm">
+            <button className="w-9 h-9 text-gray-600 hover:bg-gray-100 rounded-full flex items-center justify-center text-sm transition-colors">
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -705,19 +716,19 @@ const CustomerCasesPage = memo(() => {
       </div>
 
       {/* CTA区域 */}
-      <section className="bg-[#194fe8] py-16">
+      <section className="bg-[#194fe8] py-20">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-white mb-6">
             成为下一个成功案例
           </h2>
-          <p className="text-blue-100 text-lg mb-8">
+          <p className="text-blue-100 text-lg mb-10">
             加入这些成功企业的行列，让久火ERP助力您的数字化转型
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <FormButton className="bg-white text-[#194fe8] hover:bg-gray-100">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <FormButton className="bg-white text-[#194fe8] hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all px-8 py-3 text-base">
               免费试用
             </FormButton>
-            <FormButton variant="outline" className="border-white text-white hover:bg-white hover:text-[#194fe8]">
+            <FormButton variant="outline" className="border-white text-white hover:bg-white hover:text-[#194fe8] shadow-lg hover:shadow-xl transition-all px-8 py-3 text-base">
               预约演示
             </FormButton>
           </div>
