@@ -18,6 +18,7 @@ import AdminLogin from './AdminLogin';
 import FormManagement from './FormManagement';
 import NewsManagement from './NewsManagement';
 import UnifiedCaseManagement from './UnifiedCaseManagement';
+import CaseManagement from './CaseManagement';
 import VariantFormManagement from './VariantFormManagement';
 import ButtonFormManager from './ButtonFormManager';
 
@@ -51,6 +52,12 @@ const IntegratedAdminApp: React.FC = () => {
       name: '案例管理',
       icon: Award,
       description: '客户案例与配置管理'
+    },
+    {
+      id: 'case-management',
+      name: '精选与合作案例',
+      icon: Star,
+      description: '精选案例与合作客户案例管理'
     },
     {
       id: 'variant-forms',
@@ -129,6 +136,8 @@ const IntegratedAdminApp: React.FC = () => {
         return <NewsManagement />;
       case 'cases':
         return <UnifiedCaseManagement />;
+      case 'case-management':
+        return <CaseManagement />;
       case 'variant-forms':
         return <VariantFormManagement />;
       case 'users':

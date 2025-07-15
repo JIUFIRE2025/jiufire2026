@@ -188,6 +188,33 @@ export type CaseConfiguration = {
   updated_at: string;
 };
 
+export type FeaturedCase = {
+  id: string;
+  title: string;
+  company_name: string;
+  industry: string;
+  description: string;
+  image_url?: string;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PartnerCase = {
+  id: string;
+  company_name: string;
+  logo_url?: string;
+  industry: string;
+  description: string;
+  results: string;
+  image_url?: string;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
 type AdminUser = {
   id: string;
   email: string;
