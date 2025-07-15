@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { supabase, NewsArticle } from '../lib/supabase';
 import ImageUploader from './ImageUploader';
-import AiEditorComponent from './AiEditor';
+import RichTextEditor from './RichTextEditor';
 
 const NewsManagement: React.FC = () => {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
@@ -522,7 +522,7 @@ const NewsManagement: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     文章内容 *
                   </label>
-                  <AiEditorComponent
+                  <RichTextEditor
                     value={formData.content}
                     onChange={(content) => setFormData({ ...formData, content })}
                     placeholder="开始编写您的文章内容..."

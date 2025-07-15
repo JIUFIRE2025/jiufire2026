@@ -3,12 +3,26 @@
  * 统一项目中的日期格式化逻辑
  */
 
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string, includeTime: boolean = false) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('zh-CN', {
+  const formattedDate = date.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit'
+  });
+  
+  if (includeTime) {
+    return `${formattedDate} ${formatTime(dateString)}`;
+  }
+  
+  return formattedDate;
+};
+
+export const formatTime = (dateString: string, standalone: boolean = false) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString('zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit'
   });
 };
 
@@ -19,14 +33,6 @@ export const formatDateTime = (dateString: string) => {
     month: '2-digit',
     day: '2-digit'
   }) + ' ' + date.toLocaleTimeString('zh-CN', {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-};
-
-export const formatTime = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleTimeString('zh-CN', {
     hour: '2-digit',
     minute: '2-digit'
   });

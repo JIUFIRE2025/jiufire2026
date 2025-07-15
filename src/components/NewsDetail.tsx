@@ -12,6 +12,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { NewsArticle, supabase } from '../lib/supabase';
+import { formatDate, formatTime } from '../utils/dateUtils';
 
 interface NewsDetailProps {
   article: NewsArticle;
@@ -198,23 +199,6 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
     fetchRelatedArticles();
   }, [article.id]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('zh-CN', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   const handleRelatedArticleClick = (relatedArticle: NewsArticle) => {
     if (onArticleClick) {
       onArticleClick(relatedArticle);
@@ -270,7 +254,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
           <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm mb-8 pb-6 border-b border-gray-200">
             <div className="flex items-center space-x-1">
               <Calendar className="w-4 h-4" />
-              <span>{formatDate(article.publish_time)} {formatTime(article.publish_time)}</span>
+              <span>{formatDate(article.publish_time)} {formatTime(article.publish_time, true)}</span>
             </div>
             <div className="flex items-center space-x-1">
               <Eye className="w-4 h-4" />
@@ -417,7 +401,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
             </div>
             
             <div className="text-sm text-gray-500">
-              最后更新：{formatDate(article.updated_at)}
+              最后更新：{formatDate(article.updated_at, true)}
             </div>
           </div>
         </article>
@@ -461,7 +445,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ article, onBack, onArticleClick
                       </p>
                       
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{formatDate(relatedArticle.publish_time)}</span>
+                        <span>{formatDate(relatedArticle.publish_time, true)}</span>
                         <span className="flex items-center space-x-1">
                           <Eye className="w-3 h-3" />
                           <span>{relatedArticle.views} 阅读</span>

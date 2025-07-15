@@ -226,6 +226,9 @@ const CustomerCasesPage = memo(() => {
 
   const fetchData = useCallback(async () => {
     try {
+      // 先设置默认数据，立即显示内容
+      setCases(defaultCases);
+      setConfigurations(defaultConfigurations);
       setError(null);
 
       // Check if Supabase is configured before making requests
@@ -280,10 +283,6 @@ const CustomerCasesPage = memo(() => {
   }, [defaultCases, defaultConfigurations]);
 
   useEffect(() => {
-    // 先设置默认数据，立即显示内容
-    setCases(defaultCases);
-    setConfigurations(defaultConfigurations);
-    
     // 然后在后台获取真实数据
     const timer = setTimeout(() => {
       fetchData();
@@ -496,10 +495,11 @@ const CustomerCasesPage = memo(() => {
         <div className="mb-16">
           <div className="flex items-center space-x-2 mb-8">
             <Star className="w-5 h-5 text-orange-500" />
-            <h2 className="text-2xl font-bold text-gray-900">精选案例</h2>
+            <h2 className="text-2xl font-bold text-gray-900">精选案例 ({featuredCases.length})</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredCases.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredCases.map((case_) => (
               <div
                 key={case_.id}
@@ -538,14 +538,20 @@ const CustomerCasesPage = memo(() => {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          ) : (
+            <div className="bg-gray-50 rounded-lg p-8 text-center">
+              <p className="text-gray-500">暂无精选案例</p>
+            </div>
+          )}
         </div>
 
         {/* 合作客户案例 - 4列网格布局 */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">合作客户案例 ({regularCases.length})</h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {regularCases.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {regularCases.map((case_) => (
               <div
                 key={case_.id}
@@ -586,7 +592,12 @@ const CustomerCasesPage = memo(() => {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          ) : (
+            <div className="bg-gray-50 rounded-lg p-8 text-center">
+              <p className="text-gray-500">暂无合作客户案例</p>
+            </div>
+          )}
 
           {/* 分页 */}
           <div className="flex justify-center items-center space-x-2 mt-8">

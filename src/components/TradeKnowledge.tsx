@@ -20,6 +20,7 @@ import {
 import { supabase, NewsArticle } from '../lib/supabase';
 import NewsDetail from './NewsDetail';
 import FormButton from './FormButton';
+import { formatDate } from '../utils/dateUtils';
 
 // 预定义的模拟数据，避免每次渲染重新创建
 const MOCK_ARTICLES: NewsArticle[] = [
@@ -222,19 +223,6 @@ const TradeKnowledge = memo(() => {
     const regular = filteredArticles.filter(article => !article.is_featured);
     return { featuredArticles: featured, regularArticles: regular };
   }, [filteredArticles]);
-
-  // 优化的日期格式化
-  const formatDate = useCallback((dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }) + ' ' + date.toLocaleTimeString('zh-CN', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }, []);
 
   // 优化的文章点击处理
   const handleArticleClick = useCallback(async (article: NewsArticle) => {
@@ -469,7 +457,7 @@ const TradeKnowledge = memo(() => {
                             alt={article.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
-                          />
+                          {formatDate(article.publish_time, true)}
                         </div>
                       )}
                       
@@ -549,7 +537,7 @@ const TradeKnowledge = memo(() => {
                             </span>
                             <div className="flex items-center text-gray-500 text-sm">
                               <Calendar className="w-4 h-4 mr-1" />
-                              {formatDate(article.publish_time)}
+                              {formatDate(article.publish_time, true)}
                             </div>
                             <div className="flex items-center text-gray-500 text-sm">
                               <Eye className="w-4 h-4 mr-1" />
