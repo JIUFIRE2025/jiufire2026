@@ -567,7 +567,7 @@ const CombinedCaseManagement: React.FC = () => {
           <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setActiveTab('customer_cases')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={\`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'customer_cases'
                   ? 'bg-white text-[#194fe8] shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -577,7 +577,7 @@ const CombinedCaseManagement: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('case_configurations')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={\`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'case_configurations'
                   ? 'bg-white text-[#194fe8] shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -587,7 +587,7 @@ const CombinedCaseManagement: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('featured_cases')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={\`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'featured_cases'
                   ? 'bg-white text-[#194fe8] shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -597,7 +597,7 @@ const CombinedCaseManagement: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('partner_cases')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={\`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'partner_cases'
                   ? 'bg-white text-[#194fe8] shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -691,7 +691,7 @@ const CombinedCaseManagement: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        <span className={\`px-2 py-1 text-xs font-medium rounded-full ${
                           case_.status === 'active' 
                             ? 'bg-green-100 text-green-700' 
                             : 'bg-gray-100 text-gray-700'
@@ -796,7 +796,7 @@ const CombinedCaseManagement: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      <span className={\`px-2 py-1 text-xs font-medium rounded-full ${
                         config.is_active 
                           ? 'bg-green-100 text-green-700' 
                           : 'bg-gray-100 text-gray-700'
@@ -899,7 +899,7 @@ const CombinedCaseManagement: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      <span className={\`px-2 py-1 text-xs font-medium rounded-full ${
                         case_.is_active 
                           ? 'bg-green-100 text-green-700' 
                           : 'bg-gray-100 text-gray-700'
@@ -994,7 +994,7 @@ const CombinedCaseManagement: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      <span className={\`px-2 py-1 text-xs font-medium rounded-full ${
                         case_.is_active 
                           ? 'bg-green-100 text-green-700' 
                           : 'bg-gray-100 text-gray-700'
