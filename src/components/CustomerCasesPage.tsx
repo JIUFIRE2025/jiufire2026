@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { memo, useMemo, useCallback } from 'react';
 import { 
   Building, 
+  Briefcase,
   TrendingUp, 
   Award, 
   ArrowRight,

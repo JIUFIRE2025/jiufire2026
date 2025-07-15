@@ -20,7 +20,7 @@ import { supabase } from '../lib/supabase';
 import AdminLogin from './AdminLogin';
 import FormManagement from './FormManagement';
 import NewsManagement from './NewsManagement';
-import CaseManagement from './CaseManagement';
+import UnifiedCaseManagement from './UnifiedCaseManagement';
 import VariantFormManagement from './VariantFormManagement';
 import ButtonFormManager from './ButtonFormManager';
 
@@ -53,8 +53,8 @@ const IntegratedAdminApp: React.FC = () => {
     {
       id: 'case-management',
       name: '客户案例管理',
-      icon: Award,
-      description: '精选案例与合作客户案例管理'
+      icon: Building,
+      description: '客户案例与案例配置统一管理'
     },
     {
       id: 'variant-forms',
@@ -132,7 +132,7 @@ const IntegratedAdminApp: React.FC = () => {
       case 'news':
         return <NewsManagement />;
       case 'case-management':
-        return <CaseManagement />;
+        return <UnifiedCaseManagement />;
       case 'variant-forms':
         return <VariantFormManagement />;
       case 'users':

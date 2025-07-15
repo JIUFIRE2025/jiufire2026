@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { supabase, CustomerCase, CaseConfiguration } from '../lib/supabase';
 import ImageUploader from './ImageUploader';
+import RichTextEditor from './RichTextEditor';
 
 const UnifiedCaseManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'cases' | 'configurations'>('cases');
@@ -708,11 +709,9 @@ const UnifiedCaseManagement: React.FC = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         案例描述
                       </label>
-                      <textarea
+                      <RichTextEditor
                         value={caseFormData.description}
-                        onChange={(e) => setCaseFormData({ ...caseFormData, description: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#194fe8] focus:border-transparent"
-                        rows={3}
+                        onChange={(content) => setCaseFormData({ ...caseFormData, description: content })}
                         placeholder="请输入案例描述"
                       />
                     </div>
@@ -721,11 +720,9 @@ const UnifiedCaseManagement: React.FC = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         实施效果
                       </label>
-                      <textarea
+                      <RichTextEditor
                         value={caseFormData.results}
-                        onChange={(e) => setCaseFormData({ ...caseFormData, results: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#194fe8] focus:border-transparent"
-                        rows={3}
+                        onChange={(content) => setCaseFormData({ ...caseFormData, results: content })}
                         placeholder="请输入实施效果"
                       />
                     </div>
@@ -869,11 +866,9 @@ const UnifiedCaseManagement: React.FC = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         配置描述
                       </label>
-                      <textarea
-                        value={configFormData.description}
-                        onChange={(e) => setConfigFormData({ ...configFormData, description: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#194fe8] focus:border-transparent"
-                        rows={3}
+                      <RichTextEditor
+                        value={configFormData.description || ''}
+                        onChange={(content) => setConfigFormData({ ...configFormData, description: content })}
                         placeholder="请输入配置描述"
                       />
                     </div>

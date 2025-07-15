@@ -201,7 +201,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const handleContentChange = () => {
     if (editorRef.current) {
       // 防止初始化时触发不必要的onChange
-      if (isInitialized) {
+      // 确保每次内容变化都触发onChange
+      if (editorRef.current) {
         onChange(editorRef.current.innerHTML);
       }
     }
@@ -257,11 +258,18 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   // 初始化编辑器内容
   React.useEffect(() => {
     if (editorRef.current && !isInitialized) {
-      // 只在第一次渲染时设置内容
+      // 设置初始内容
       if (value) {
         editorRef.current.innerHTML = value;
       }
       setIsInitialized(true);
+    }
+  }, [value, isInitialized]);
+  
+  // 当value从外部更新时同步到编辑器
+  React.useEffect(() => {
+    if (editorRef.current && isInitialized && value !== editorRef.current.innerHTML) {
+      editorRef.current.innerHTML = value;
     }
   }, [value, isInitialized]);
 
